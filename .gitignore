@@ -1,5 +1,3 @@
 src/*
-!src/.bashrc
-!src/.m2install.conf
 conf/magento/auth.json
 .idea

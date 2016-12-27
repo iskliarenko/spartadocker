@@ -42,8 +42,7 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin -
     && chmod +x /usr/bin/n98-magerun2
 
 # Supervisor config
-RUN mkdir /var/log/supervisor/
-RUN /usr/bin/easy_install supervisor && /usr/bin/easy_install supervisor-stdout
+RUN mkdir /var/log/supervisor/ && /usr/bin/easy_install supervisor && /usr/bin/easy_install supervisor-stdout
 ADD ./conf/daemons/supervisord.conf /etc/supervisord.conf
 
 # Initialization Startup Script
@@ -52,5 +51,6 @@ RUN chmod 755 /start.sh && /bin/bash start.sh
 
 EXPOSE 3306
 EXPOSE 80
+EXPOSE 22
 
 ENTRYPOINT [ "/start.sh" ]

@@ -23,7 +23,7 @@ if [ ! -d "/var/lib/mysql/magento/" ]; then
 else
 	# start all the services
 	IP=`ifconfig eth0 |grep netmask |awk {' print $2 '}`
-	echo -e "Container IP address: ${IP}\n To access the container use 'ssh root@${IP}' with password: 'root'\n or 'ssh apache@${IP}' with password: 'apache'\n All services are running, press Ctrl-C to stop container..."
+	echo -e "Container IP address: ${IP}\n To access the container use 'ssh root@${IP}' with password: 'root'\n or 'ssh root@localhost -p 2222 with password: 'root'\n All services are running, press Ctrl-C to stop container..."
 	/usr/bin/supervisord -c /etc/supervisord.conf >/dev/null 2>&1
 	exit 0;
 fi
