@@ -35,7 +35,7 @@ RUN echo 'apache:apache' | chpasswd && chsh apache -s /bin/bash && usermod -d /v
 
 # Magento tools
 RUN mkdir -p /root/.config/composer
-COPY ./conf/magento/auth.json /root/.config/composer/auth.json
+COPY ./conf/magento/auth.json /root/.composer/auth.json
 COPY ./conf/magento/.m2install.conf /root/.m2install.conf
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer \
     && chmod +x /usr/bin/composer; curl -o /usr/bin/m2install.sh https://raw.githubusercontent.com/yvoronoy/m2install/master/m2install.sh \
