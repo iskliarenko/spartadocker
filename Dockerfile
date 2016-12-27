@@ -11,7 +11,8 @@ RUN yum update --enablerepo=remi-php70 -y && yum install -d 0 --nogpgcheck --ena
 		   httpd httpd-tools \
 		   php php-cli php-mcrypt php-mbstring php-soap php-pecl-xdebug php-xml php-bcmath \
 		   php-pecl-memcached php-pecl-redis php-pdo php-gd php-mysqlnd php-intl php-pecl-zip \
-		   Percona-Server-server-56 Percona-Server-client-56 
+		   Percona-Server-server-56 Percona-Server-client-56 \
+		   && yum clean all 
 # PHP 
 RUN echo -e "xdebug.remote_enable = 1 \nxdebug.remote_autostart = 1\nxdebug.max_nesting_level = 100000" >> /etc/php.d/15-xdebug.ini
 RUN sed -i -e "s/;date.timezone\s*=/date.timezone = 'UTC'/g" /etc/php.ini
@@ -42,7 +43,7 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin -
     && chmod +x /usr/bin/n98-magerun2
 
 # Supervisor config
-RUN mkdir /var/log/supervisor/ && /usr/bin/easy_install supervisor && /usr/bin/easy_install supervisor-stdout
+RUN mkdir /var/log/supervisor/ && /usr/bin/easy_install supervisor && /usr/bin/easy_install supervisor-stdout && rm /tmp/* -rf
 ADD ./conf/daemons/supervisord.conf /etc/supervisord.conf
 
 # Initialization Startup Script
