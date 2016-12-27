@@ -1,8 +1,6 @@
 FROM centos:latest
 MAINTAINER Yuriy Sklyarenko <iskliarenko@magento.com>
 
-ENV TERM=xterm-256color
-
 # Additional repos
 RUN yum install -y http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-8.noarch.rpm \
 		   http://www.percona.com/downloads/percona-release/redhat/0.1-3/percona-release-0.1-3.noarch.rpm \
@@ -32,6 +30,7 @@ COPY ./conf/daemons/mysql-sparta.cnf /etc/my.cnf.d/mysql-sparta.cnf
 
 # SSH
 RUN echo 'root:root' | chpasswd && /usr/bin/ssh-keygen -A 
+RUN echo 'apache:apache' | chpasswd && chsh apache -s /bin/bash && usermod -d /var/www/html apache && echo 'PS1="[\u@\h \W]\\$ "' >> /var/www/html/.bashrc
 
 # Magento tools
 RUN mkdir -p /root/.config/composer
@@ -54,5 +53,4 @@ RUN chmod 755 /start.sh && /bin/bash start.sh
 EXPOSE 3306
 EXPOSE 80
 
-WORKDIR /var/www/html
 ENTRYPOINT [ "/start.sh" ]
