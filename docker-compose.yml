@@ -1,0 +1,12 @@
+version: "2"
+
+services:
+  web:
+    container_name: m2
+    restart: always
+    build: .
+    volumes:
+      - ./src:/var/www/html
+    ports:
+     - "8000:80"
+     - "33060:3306"

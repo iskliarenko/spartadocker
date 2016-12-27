@@ -1,0 +1,4 @@
+src/*
+!src/index.php
+conf/magento/auth.json
+.idea
