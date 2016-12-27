@@ -20,7 +20,7 @@ RUN sed -i -e "s/post_max_size\s*=\s*2M/post_max_size = 64M/g" /etc/php.ini
 RUN sed -i -e "s/memory_limit\s*=\s*128M/memory_limit = 768M/g" /etc/php.ini
 
 # Apache
-RUN sed -i -e "s/AllowOverride\s*none/AllowOverride All/g" /etc/httpd/conf/httpd.conf
+RUN sed -i -e "s/AllowOverride\s*None/AllowOverride All/g" /etc/httpd/conf/httpd.conf
 RUN sed -i -e "s/#ServerName\s*www.example.com:80/ServerName local.dev/g" /etc/httpd/conf/httpd.conf
 RUN echo "Header always set Strict-Transport-Security 'max-age=0'" >> /etc/httpd/conf/httpd.conf
 RUN echo "umask 002" >> /etc/profile
