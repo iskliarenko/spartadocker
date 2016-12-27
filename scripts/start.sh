@@ -16,9 +16,11 @@ if [ ! -d "/var/lib/mysql/magento/" ]; then
 
 	sleep 5
 	echo -e "\n --------- Creating database ${MYSQL_DATABASE}, user ${MYSQL_USER}, password ${MYSQL_PASSWORD} ------- \n"
-	echo "CREATE DATABASE IF NOT EXISTS \`$MYSQL_DATABASE\` CHARACTER SET utf8 COLLATE utf8_general_ci;" |/usr/bin/mysql 
-	echo "GRANT ALL ON \`$MYSQL_DATABASE\`.* to '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PASSWORD' WITH GRANT OPTION;" |/usr/bin/mysql
-	echo "GRANT ALL ON \`$MYSQL_DATABASE\`.* to '$MYSQL_USER'@'localhost' IDENTIFIED BY '$MYSQL_PASSWORD' WITH GRANT OPTION;" |/usr/bin/mysql
+	echo "CREATE DATABASE IF NOT EXISTS \`${MYSQL_DATABASE}\` CHARACTER SET utf8 COLLATE utf8_general_ci;" |/usr/bin/mysql 
+	echo "GRANT ALL ON \`${MYSQL_DATABASE}\`.* to '${MYSQL_USER}'@'%' IDENTIFIED BY '${MYSQL_PASSWORD}' WITH GRANT OPTION;" |/usr/bin/mysql
+	echo "GRANT ALL ON \`${MYSQL_DATABASE}\`.* to '${MYSQL_USER}'@'localhost' IDENTIFIED BY '${MYSQL_PASSWORD}' WITH GRANT OPTION;" |/usr/bin/mysql
+	echo "GRANT ALL ON \`${MYSQL_DATABASE}_%\`.* to '${MYSQL_USER}'@'%' IDENTIFIED BY '${MYSQL_PASSWORD}' WITH GRANT OPTION;" |/usr/bin/mysql
+	echo "GRANT ALL ON \`${MYSQL_DATABASE}_%\`.* to '${MYSQL_USER}'@'localhost' IDENTIFIED BY '${MYSQL_PASSWORD}' WITH GRANT OPTION;" |/usr/bin/mysql
 
 else
 	# start all the services

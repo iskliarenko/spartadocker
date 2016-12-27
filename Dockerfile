@@ -26,7 +26,6 @@ RUN sed -i -e "s/AllowOverride\s*none/AllowOverride All/g" /etc/httpd/conf/httpd
 RUN sed -i -e "s/#ServerName\s*www.example.com:80/ServerName local.dev/g" /etc/httpd/conf/httpd.conf
 RUN echo "Header always set Strict-Transport-Security 'max-age=0'" >> /etc/httpd/conf/httpd.conf
 RUN echo "umask 002" >> /etc/profile
-RUN chsh apache -s /bin/bash && usermod -d /var/www/ apache && cp /root/.bashrc /var/www/ && chown apache.apache /var/www/.bashrc
 
 # MySQL
 COPY ./conf/daemons/mysql-sparta.cnf /etc/my.cnf.d/mysql-sparta.cnf 
@@ -55,4 +54,5 @@ RUN chmod 755 /start.sh && /bin/bash start.sh
 EXPOSE 3306
 EXPOSE 80
 
+WORKDIR /var/www/html
 ENTRYPOINT [ "/start.sh" ]
