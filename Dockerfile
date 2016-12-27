@@ -30,7 +30,7 @@ COPY ./conf/daemons/mysql-sparta.cnf /etc/my.cnf.d/mysql-sparta.cnf
 
 # SSH
 RUN echo 'root:root' | chpasswd && /usr/bin/ssh-keygen -A 
-RUN echo 'apache:apache' | chpasswd && chsh apache -s /bin/bash && usermod -d /var/www/html apache && echo 'PS1="[\u@\h \W]\\$ "' >> /var/www/html/.bashrc
+RUN echo 'apache:apache' | chpasswd && chsh apache -s /bin/bash && usermod -d /var/www/html apache 
 
 # Magento tools
 RUN mkdir -p /root/.config/composer
