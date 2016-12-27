@@ -35,6 +35,7 @@ RUN echo 'apache:apache' | chpasswd && chsh apache -s /bin/bash && usermod -d /v
 RUN mkdir -p /root/.ssh
 ADD ./conf/magento/docker.pem.pub /root/.ssh/authorized_keys
 ADD ./conf/magento/docker.pem /root/.ssh/docker.pem
+RUN chmod 400 /root/.ssh/*
 
 # Magento tools
 RUN mkdir -p /root/.config/composer
