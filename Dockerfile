@@ -7,7 +7,7 @@ RUN yum install -y http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-
 		   http://rpms.remirepo.net/enterprise/remi-release-7.rpm
 RUN echo -e "\nip_resolve=4\nerrorlevel=0\nrpmverbosity=critical" >> /etc/yum.conf
 RUN yum update --enablerepo=remi-php70 -y && yum install -d 0 --nogpgcheck --enablerepo=remi-php70 -y vim rsync less which openssh-server cronie \
-		   bash-completion bash-completion-extras mod_ssl mc nano dos2unix unzip lsof pv telnet zsh patch python2-pip net-tools \
+		   bash-completion bash-completion-extras mod_ssl mc nano dos2unix unzip lsof pv telnet zsh patch python2-pip net-tools git \
 		   httpd httpd-tools \
 		   php php-cli php-mcrypt php-mbstring php-soap php-pecl-xdebug php-xml php-bcmath \
 		   php-pecl-memcached php-pecl-redis php-pdo php-gd php-mysqlnd php-intl php-pecl-zip \
@@ -32,6 +32,10 @@ COPY ./conf/daemons/mysql-sparta.cnf /etc/my.cnf.d/mysql-sparta.cnf
 # SSH
 RUN echo 'root:root' | chpasswd && /usr/bin/ssh-keygen -A 
 RUN echo 'apache:apache' | chpasswd && chsh apache -s /bin/bash && usermod -d /var/www/html apache 
+RUN mkdir -p /root/.ssh
+ADD ./conf/magento/docker.pem.pub /root/.ssh/authorized_keys
+ADD ./conf/magento/docker.pem /root/.ssh/docker.pem
+RUN chmod 400 /root/.ssh/*
 
 # Magento tools
 RUN mkdir -p /root/.config/composer
