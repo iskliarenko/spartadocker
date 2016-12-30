@@ -1,6 +1,6 @@
 [mysqld]
 ## Network
-bind-address 			     = 0.0.0.0
+bind-address                         = 0.0.0.0
 ## Cache
 table-definition-cache               = 500
 table-open-cache                     = 500
