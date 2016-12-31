@@ -14,6 +14,8 @@ RUN yum update --enablerepo=remi-php70 -y && yum install -d 0 --nogpgcheck --ena
 		   Percona-Server-server-56 Percona-Server-client-56 \
 		   && yum clean all 
 # PHP 
+ADD ./conf/daemons/xdebug-php.sh /usr/local/bin/
+RUN /usr/local/bin/xdebug-php.sh 0
 RUN echo -e "xdebug.remote_enable = 1 \nxdebug.remote_autostart = 1\nxdebug.remote_host=10.254.254.254\nxdebug.max_nesting_level = 100000" >> /etc/php.d/15-xdebug.ini
 RUN sed -i -e "s/;date.timezone\s*=/date.timezone = 'UTC'/g" /etc/php.ini
 RUN sed -i -e "s/upload_max_filesize\s*=\s*2M/upload_max_filesize = 64M/g" /etc/php.ini
@@ -37,7 +39,7 @@ ADD ./conf/magento/docker.pem.pub /root/.ssh/authorized_keys
 ADD ./conf/magento/docker.pem /root/.ssh/docker.pem
 RUN chmod 400 /root/.ssh/*
 ADD ./conf/daemons/.terminal /root/.terminal
-RUN printf "\nsource ~/.terminal\n" >> /root/.bashrc
+RUN echo -e "\nsource ~/.terminal\n" >> /root/.bashrc
 
 # Magento tools
 RUN mkdir -p /root/.config/composer
