@@ -28,7 +28,7 @@ RUN echo -e "[tideways]\nname = Tideways\nbaseurl = https://s3-eu-west-1.amazona
 RUN rpm --import https://s3-eu-west-1.amazonaws.com/qafoo-profiler/packages/EEB5E8F4.gpg \
     && yum makecache --disablerepo=* --enablerepo=tideways \
     && yum install -y tideways-php tideways-cli
-RUN echo -e "tideways.auto_prepend_library=0\ntideways.framework=magento2\ntideways.udp_connection=tcp://tideways:8135\ntideways.connection=tcp://tideways:9135\n" >> /etc/php.d/40-tideways.ini
+RUN echo -e "tideways.auto_prepend_library=0\ntideways.framework=magento2\n" >> /etc/php.d/40-tideways.ini
 RUN ln -s /usr/local/bin/php-ext-switch.sh /usr/local/bin/tideways-sw.sh
 RUN /usr/local/bin/tideways-sw.sh 0
 
