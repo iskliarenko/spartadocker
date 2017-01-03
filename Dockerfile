@@ -11,7 +11,7 @@ RUN yum update --enablerepo=remi-php70 -y && yum install -d 0 --nogpgcheck --ena
 		   httpd httpd-tools \
 		   php php-cli php-mcrypt php-mbstring php-soap php-pecl-xdebug php-xml php-bcmath \
 		   php-pecl-memcached php-pecl-redis php-pdo php-gd php-mysqlnd php-intl php-pecl-zip \
-		   ruby ruby-devel sqlite sqlite-devel make gcc gcc-c++ \
+		   ruby ruby-devel sqlite-devel make gcc gcc-c++ \
 		   Percona-Server-server-56 Percona-Server-client-56 \
 		   && yum clean all 
 # PHP 
@@ -22,7 +22,7 @@ RUN sed -i -e "s/post_max_size\s*=\s*2M/post_max_size = 64M/g" /etc/php.ini
 RUN sed -i -e "s/memory_limit\s*=\s*128M/memory_limit = 768M/g" /etc/php.ini
 RUN sed -i -e "s/sendmail_path\s=\s\/usr\/sbin\/sendmail\s-t\s-i/sendmail_path=\/usr\/bin\/env catchmail -f sparta@docker.local/g" /etc/php.ini
 
-# Mailcacher
+# Mailcatcher
 RUN gem install mailcatcher --no-ri --no-rdoc
 
 # Apache
