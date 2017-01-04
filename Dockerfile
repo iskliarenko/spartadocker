@@ -7,7 +7,7 @@ RUN yum install -y http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-
 		   http://rpms.remirepo.net/enterprise/remi-release-7.rpm
 RUN echo -e "\nip_resolve=4\nerrorlevel=0\nrpmverbosity=critical" >> /etc/yum.conf
 RUN yum update --enablerepo=remi-php70 -y && yum install -d 0 --nogpgcheck --enablerepo=remi-php70 -y vim rsync less which openssh-server cronie \
-		   bash-completion bash-completion-extras mod_ssl mc nano dos2unix unzip lsof pv telnet zsh patch python2-pip net-tools git \
+		   bash-completion bash-completion-extras mod_ssl mc nano dos2unix unzip lsof pv telnet zsh patch python2-pip net-tools git tmux htop \
 		   httpd httpd-tools \
 		   php php-cli php-mcrypt php-mbstring php-soap php-pecl-xdebug php-xml php-bcmath \
 		   php-pecl-memcached php-pecl-redis php-pdo php-gd php-mysqlnd php-intl php-pecl-zip \
@@ -15,7 +15,10 @@ RUN yum update --enablerepo=remi-php70 -y && yum install -d 0 --nogpgcheck --ena
 		   Percona-Server-server-56 Percona-Server-client-56 \
 		   && yum clean all 
 # PHP 
-RUN echo -e "xdebug.remote_enable = 1 \nxdebug.remote_autostart = 1\nxdebug.max_nesting_level = 100000" >> /etc/php.d/15-xdebug.ini
+ADD ./scripts/php-ext-switch.sh /usr/local/bin/
+RUN ln -s /usr/local/bin/php-ext-switch.sh /usr/local/bin/xdebug-sw.sh
+RUN /usr/local/bin/xdebug-sw.sh 0
+RUN echo -e "xdebug.remote_enable = 1 \nxdebug.remote_autostart = 1\nxdebug.remote_host=10.254.254.254\nxdebug.max_nesting_level = 100000" >> /etc/php.d/15-xdebug.ini
 RUN sed -i -e "s/;date.timezone\s*=/date.timezone = 'UTC'/g" /etc/php.ini
 RUN sed -i -e "s/upload_max_filesize\s*=\s*2M/upload_max_filesize = 64M/g" /etc/php.ini
 RUN sed -i -e "s/post_max_size\s*=\s*2M/post_max_size = 64M/g" /etc/php.ini
@@ -24,6 +27,15 @@ RUN sed -i -e "s/sendmail_path\s=\s\/usr\/sbin\/sendmail\s-t\s-i/sendmail_path=\
 
 # Mailcatcher
 RUN gem install mailcatcher --no-ri --no-rdoc
+
+# tideways PHP profiler
+RUN echo -e "[tideways]\nname = Tideways\nbaseurl = https://s3-eu-west-1.amazonaws.com/qafoo-profiler/rpm" > /etc/yum.repos.d/tideways.repo
+RUN rpm --import https://s3-eu-west-1.amazonaws.com/qafoo-profiler/packages/EEB5E8F4.gpg \
+    && yum makecache --disablerepo=* --enablerepo=tideways \
+    && yum install -y tideways-php tideways-cli
+RUN echo -e "tideways.auto_prepend_library=0\ntideways.framework=magento2\n" >> /etc/php.d/40-tideways.ini
+RUN ln -s /usr/local/bin/php-ext-switch.sh /usr/local/bin/tideways-sw.sh
+RUN /usr/local/bin/tideways-sw.sh 0
 
 # Apache
 RUN sed -i -e "s/AllowOverride\s*None/AllowOverride All/g" /etc/httpd/conf/httpd.conf
@@ -41,6 +53,8 @@ RUN mkdir -p /root/.ssh
 ADD ./conf/magento/docker.pem.pub /root/.ssh/authorized_keys
 ADD ./conf/magento/docker.pem /root/.ssh/docker.pem
 RUN chmod 400 /root/.ssh/*
+ADD ./conf/daemons/.terminal /root/.terminal
+RUN echo -e "\nsource ~/.terminal\n" >> /root/.bashrc
 
 # Magento tools
 RUN mkdir -p /root/.config/composer
