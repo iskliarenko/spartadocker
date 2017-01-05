@@ -20,6 +20,7 @@ if [ ! -d "/var/lib/mysql/magento/" ]; then
 	echo "GRANT ALL ON \`${MYSQL_DATABASE}\`.* to '${MYSQL_USER}'@'localhost' IDENTIFIED BY '${MYSQL_PASSWORD}' WITH GRANT OPTION;" |/usr/bin/mysql
 	echo "GRANT ALL ON \`${MYSQL_DATABASE}_%\`.* to '${MYSQL_USER}'@'%' IDENTIFIED BY '${MYSQL_PASSWORD}' WITH GRANT OPTION;" |/usr/bin/mysql
 	echo "GRANT ALL ON \`${MYSQL_DATABASE}_%\`.* to '${MYSQL_USER}'@'localhost' IDENTIFIED BY '${MYSQL_PASSWORD}' WITH GRANT OPTION;" |/usr/bin/mysql
+	echo "GRANT ALL ON *.* to 'root'@'%' IDENTIFIED BY '' WITH GRANT OPTION;" |/usr/bin/mysql
 else
 	# start all the services
 	IP=`ifconfig eth0 |grep netmask |awk {' print $2 '}`
