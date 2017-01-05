@@ -5,7 +5,6 @@ MAINTAINER Yuriy Sklyarenko <iskliarenko@magento.com>
 RUN yum install -y http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-8.noarch.rpm \
 		   http://www.percona.com/downloads/percona-release/redhat/0.1-3/percona-release-0.1-3.noarch.rpm \
 		   http://rpms.remirepo.net/enterprise/remi-release-7.rpm
-RUN echo -e "[tideways]\nname = Tideways\nbaseurl = https://s3-eu-west-1.amazonaws.com/qafoo-profiler/rpm" > /etc/yum.repos.d/tideways.repo
 RUN echo -e "\nip_resolve=4\nerrorlevel=0\nrpmverbosity=critical" >> /etc/yum.conf
 RUN yum update --enablerepo=remi-php70 -y && yum install -d 0 --nogpgcheck --enablerepo=remi-php70 -y vim rsync less which openssh-server cronie \
 		   bash-completion bash-completion-extras mod_ssl mc nano dos2unix unzip lsof pv telnet zsh patch python2-pip net-tools git tmux htop \
@@ -14,6 +13,7 @@ RUN yum update --enablerepo=remi-php70 -y && yum install -d 0 --nogpgcheck --ena
 		   php-pecl-memcached php-pecl-redis php-pdo php-gd php-mysqlnd php-intl php-pecl-zip \
 		   ruby ruby-devel sqlite-devel make gcc gcc-c++ \
 		   Percona-Server-server-56 Percona-Server-client-56 
+RUN echo -e "[tideways]\nname = Tideways\nbaseurl = https://s3-eu-west-1.amazonaws.com/qafoo-profiler/rpm" > /etc/yum.repos.d/tideways.repo
 RUN rpm --import https://s3-eu-west-1.amazonaws.com/qafoo-profiler/packages/EEB5E8F4.gpg \
 	    && yum makecache --disablerepo=* --enablerepo=tideways \
 	    && yum install -y tideways-php tideways-cli && yum clean all
