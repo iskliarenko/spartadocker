@@ -37,6 +37,7 @@ RUN ln -s /usr/local/bin/php-ext-switch.sh /usr/local/bin/tideways-sw.sh && /usr
 
 # Apache
 RUN sed -i -e "s/AllowOverride\s*None/AllowOverride All/g" /etc/httpd/conf/httpd.conf
+RUN sed -i -e "s/#OPTIONS=/OPTIONS=-DFOREGROUND/g" /etc/sysconfig/httpd
 RUN sed -i -e "s/#ServerName\s*www.example.com:80/ServerName local.dev/g" /etc/httpd/conf/httpd.conf
 RUN echo "Header always set Strict-Transport-Security 'max-age=0'" >> /etc/httpd/conf/httpd.conf
 RUN echo "umask 002" >> /etc/profile
