@@ -1,0 +1,16 @@
+version: "2"
+
+services:
+  webm1:
+    container_name: m1
+    restart: always
+    build: 
+        dockerfile: ./Dockerfile-m1
+        context: .
+    volumes:
+      - ./src:/var/www/html
+    ports:
+     - "8000:80"
+     - "8001:81"
+     - "33060:3306"
+     - "2222:22"
