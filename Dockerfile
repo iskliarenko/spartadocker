@@ -73,6 +73,7 @@ RUN chmod 755 /start.sh && /bin/bash start.sh
 
 EXPOSE 3306
 EXPOSE 80
+EXPOSE 443
 EXPOSE 81
 EXPOSE 22
 
