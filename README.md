@@ -27,7 +27,7 @@ docker-compose -f docker-compose-m1.yml up
 ```
 
 After build (5-15 minutes at first time) your environment will be ready and available here: 
- - Web - http://localhost:8000/
+ - Web - http://127.0.0.1:8000/
  - SSH - ssh root@localhost -p2222
  - MySQL - localhost:33060
  - MailCatcher - http://localhost:8001/
