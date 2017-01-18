@@ -6,7 +6,7 @@ RUN yum install -y http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-
 		   http://www.percona.com/downloads/percona-release/redhat/0.1-3/percona-release-0.1-3.noarch.rpm \
 		   http://rpms.remirepo.net/enterprise/remi-release-7.rpm
 RUN echo -e "\nip_resolve=4\nerrorlevel=0\nrpmverbosity=critical" >> /etc/yum.conf
-RUN yum update --enablerepo=remi-php70 -y && yum install -d 0 --nogpgcheck --enablerepo=remi-php70 -y vim rsync less which openssh-server cronie \
+RUN yum update --enablerepo=remi-php70 -y && yum install -d 0 --nogpgcheck --enablerepo=remi-php70 -y vim rsync less which openssh-server cronie sudo \
 		   bash-completion bash-completion-extras mod_ssl mc nano dos2unix unzip lsof pv telnet zsh patch python2-pip net-tools git tmux htop \
 		   httpd httpd-tools \
 		   php php-cli php-mcrypt php-mbstring php-soap php-pecl-xdebug php-xml php-bcmath \
@@ -40,6 +40,10 @@ RUN sed -i -e "s/#OPTIONS=/OPTIONS=-DFOREGROUND/g" /etc/sysconfig/httpd
 RUN sed -i -e "s/#ServerName\s*www.example.com:80/ServerName local.dev/g" /etc/httpd/conf/httpd.conf
 RUN echo "Header always set Strict-Transport-Security 'max-age=0'" >> /etc/httpd/conf/httpd.conf
 RUN echo "umask 002" >> /etc/profile
+
+# Always run /usr/bin/php via 'apache' user
+RUN mv /usr/bin/php /usr/bin/php.real && touch /usr/bin/php && chmod 755 /usr/bin/php
+RUN echo '#!/bin/bash' >> /usr/bin/php && echo 'sudo -u apache /usr/bin/php.real $@' >> /usr/bin/php
 
 # MySQL
 COPY ./conf/daemons/mysql-sparta.cnf /etc/my.cnf.d/mysql-sparta.cnf 
