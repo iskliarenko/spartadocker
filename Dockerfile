@@ -41,10 +41,6 @@ RUN sed -i -e "s/#ServerName\s*www.example.com:80/ServerName local.dev/g" /etc/h
 RUN echo "Header always set Strict-Transport-Security 'max-age=0'" >> /etc/httpd/conf/httpd.conf
 RUN echo "umask 002" >> /etc/profile
 
-# Always run /usr/bin/php via 'apache' user
-RUN mv /usr/bin/php /usr/bin/php.real && touch /usr/bin/php && chmod 755 /usr/bin/php
-RUN echo '#!/bin/bash' >> /usr/bin/php && echo 'sudo -u apache /usr/bin/php.real $@' >> /usr/bin/php
-
 # MySQL
 COPY ./conf/daemons/mysql-sparta.cnf /etc/my.cnf.d/mysql-sparta.cnf 
 
@@ -66,6 +62,10 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin -
     && chmod +x /usr/bin/composer; curl -o /usr/bin/m2install.sh https://raw.githubusercontent.com/yvoronoy/m2install/master/m2install.sh \
     && chmod +x /usr/bin/m2install.sh; curl -o /usr/bin/n98-magerun2 https://files.magerun.net/n98-magerun2.phar \
     && chmod +x /usr/bin/n98-magerun2
+
+# Always run /usr/bin/php via 'apache' user
+RUN mv /usr/bin/php /usr/bin/php.real && touch /usr/bin/php && chmod 755 /usr/bin/php
+RUN echo '#!/bin/bash' >> /usr/bin/php && echo 'sudo -u apache /usr/bin/php.real $@' >> /usr/bin/php
 
 # Supervisor config
 RUN mkdir /var/log/supervisor/ && /usr/bin/easy_install supervisor && /usr/bin/easy_install supervisor-stdout && rm /tmp/* -rf
