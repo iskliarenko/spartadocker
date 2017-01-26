@@ -57,6 +57,10 @@ RUN echo -e "\nsource ~/.terminal\n" >> /root/.bashrc
 # Magento tools
 RUN curl -o /usr/bin/n98-magerun https://files.magerun.net/n98-magerun.phar && chmod +x /usr/bin/n98-magerun
 
+# Always run /usr/bin/php via 'apache' user
+RUN mv /usr/bin/php /usr/bin/php.real && touch /usr/bin/php && chmod 755 /usr/bin/php
+RUN echo '#!/bin/bash' >> /usr/bin/php && echo 'sudo -u apache /usr/bin/php.real $@' >> /usr/bin/php
+
 # Supervisor config
 RUN mkdir /var/log/supervisor/ && /usr/bin/easy_install supervisor && /usr/bin/easy_install supervisor-stdout && rm /tmp/* -rf
 ADD ./conf/daemons/supervisord.conf /etc/supervisord.conf
