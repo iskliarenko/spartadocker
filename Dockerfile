@@ -45,26 +45,25 @@ COPY ./conf/daemons/mysql-sparta.cnf /etc/my.cnf.d/mysql-sparta.cnf
 
 # SSH
 RUN echo 'root:root' | chpasswd && /usr/bin/ssh-keygen -A 
-RUN echo 'apache:apache' | chpasswd && chsh apache -s /bin/bash && usermod -d /var/www/html apache 
-RUN mkdir -p /root/.ssh
-ADD ./conf/magento/docker.pem.pub /root/.ssh/authorized_keys
-ADD ./conf/magento/docker.pem /root/.ssh/docker.pem
-RUN chmod 400 /root/.ssh/*
-ADD ./conf/daemons/.terminal /root/.terminal
-RUN echo -e "\nsource ~/.terminal\n" >> /root/.bashrc
+RUN echo 'apache:apache' | chpasswd && chsh apache -s /bin/bash && usermod -d /var/www apache 
+RUN chown apache.apache /var/www && mkdir -p /var/www/.ssh
+ADD ./conf/magento/docker.pem.pub /var/www/.ssh/authorized_keys
+ADD ./conf/magento/docker.pem /var/www/.ssh/docker.pem
+RUN chmod 400 /var/www/.ssh/*
+ADD ./conf/daemons/.terminal /var/www/.terminal
+RUN cp /root/.bashrc /var/www
+RUN echo -e "\nsource ~/.terminal\n" >> /var/www/.bashrc
+RUN echo 'apache ALL=(ALL:ALL) NOPASSWD:ALL' >> /etc/sudoers
 
 # Magento tools
-RUN mkdir -p /root/.config/composer
-COPY ./conf/magento/auth.json /root/.composer/auth.json
-COPY ./conf/magento/.m2install.conf /root/.m2install.conf
+RUN mkdir -p /var/www/.config/composer
+COPY ./conf/magento/auth.json /var/www/.composer/auth.json
+COPY ./conf/magento/.m2install.conf /var/www/.m2install.conf
+RUN find /var/www/ -exec chown apache.apache {} \;
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer \
     && chmod +x /usr/bin/composer; curl -o /usr/bin/m2install.sh https://raw.githubusercontent.com/yvoronoy/m2install/master/m2install.sh \
     && chmod +x /usr/bin/m2install.sh; curl -o /usr/bin/n98-magerun2 https://files.magerun.net/n98-magerun2.phar \
     && chmod +x /usr/bin/n98-magerun2
-
-# Always run /usr/bin/php via 'apache' user
-RUN mv /usr/bin/php /usr/bin/php.real && touch /usr/bin/php && chmod 755 /usr/bin/php
-RUN echo '#!/bin/bash' >> /usr/bin/php && echo 'sudo -u apache /usr/bin/php.real $@' >> /usr/bin/php
 
 # Supervisor config
 RUN mkdir /var/log/supervisor/ && /usr/bin/easy_install supervisor && /usr/bin/easy_install supervisor-stdout && rm /tmp/* -rf
