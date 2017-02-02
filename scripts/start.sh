@@ -24,7 +24,7 @@ if [ ! -d "/var/lib/mysql/magento/" ]; then
 	echo "GRANT ALL ON \`${MYSQL_DATABASE}_%\`.* to '${MYSQL_USER}'@'localhost' IDENTIFIED BY '${MYSQL_PASSWORD}' WITH GRANT OPTION;" | ${MYSQLBIN}
 	echo "GRANT ALL ON *.* to 'root'@'%' IDENTIFIED BY '' WITH GRANT OPTION;" | ${MYSQLBIN}
 else
-	echo -e "Container IP address: ${IP}\n To access the container use 'ssh root@${IP}' with password: 'root'\n or 'ssh root@localhost -p 2222' with password: 'root'\n Mailcatcher web-interface: http://${IP}:81/ or http://localhost:8001/\n All services are running, press Ctrl-C to stop container..."
+	echo -e "Container IP address: ${IP}\n To access the container use 'ssh apache@${IP}' with password: 'apache'\n or 'ssh apache@localhost -p 2222' with password: 'apache'\n User 'apache' can use sudo \n Mailcatcher web-interface: http://${IP}:81/ or http://localhost:8001/\n All services are running, press Ctrl-C to stop container..."
 
 	# start all the services
 	/usr/bin/supervisord -c /etc/supervisord.conf >/dev/null 2>&1

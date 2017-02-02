@@ -51,7 +51,7 @@ ADD ./conf/magento/docker.pem.pub /var/www/.ssh/authorized_keys
 ADD ./conf/magento/docker.pem /var/www/.ssh/docker.pem
 RUN chmod 400 /var/www/.ssh/*
 ADD ./conf/daemons/.terminal /var/www/.terminal
-RUN cp /root/.bashrc /var/www
+RUN cp /root/.bashrc /var/www && ln -s /var/www/.bashrc /var/www/.bash_profile
 RUN echo -e "\nsource ~/.terminal\n" >> /var/www/.bashrc
 RUN echo 'apache ALL=(ALL:ALL) NOPASSWD:ALL' >> /etc/sudoers
 
