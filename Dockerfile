@@ -60,10 +60,11 @@ RUN mkdir -p /var/www/.config/composer
 COPY ./conf/magento/auth.json /var/www/.composer/auth.json
 COPY ./conf/magento/.m2install.conf /var/www/.m2install.conf
 RUN find /var/www/ -exec chown apache.apache {} \;
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer \
-    && chmod +x /usr/bin/composer; curl -o /usr/bin/m2install.sh https://raw.githubusercontent.com/yvoronoy/m2install/master/m2install.sh \
-    && chmod +x /usr/bin/m2install.sh; curl -o /usr/bin/n98-magerun2 https://files.magerun.net/n98-magerun2.phar \
-    && chmod +x /usr/bin/n98-magerun2
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer && chmod +x /usr/bin/composer \
+    && curl -o /usr/bin/m2install.sh https://raw.githubusercontent.com/yvoronoy/m2install/master/m2install.sh && chmod +x /usr/bin/m2install.sh \
+    && curl -o /usr/bin/convert-for-composer.php https://raw.githubusercontent.com/isitnikov/m2-convert-patch-for-composer-install/master/convert-for-composer.php \
+    && chmod +x /usr/bin/convert-for-composer.php \
+    && curl -o /usr/bin/n98-magerun2 https://files.magerun.net/n98-magerun2.phar && chmod +x /usr/bin/n98-magerun2
 
 # Supervisor config
 RUN mkdir /var/log/supervisor/ && /usr/bin/easy_install supervisor && /usr/bin/easy_install supervisor-stdout && rm /tmp/* -rf
