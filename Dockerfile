@@ -50,7 +50,7 @@ RUN chown -R apache.apache /var/www
 RUN sed -i -e "s/AuthorizedKeysFile\s*\.ssh\/authorized_keys/AuthorizedKeysFile \/etc\/ssh\/authorized_keys/g" /etc/ssh/sshd_config
 ADD ./conf/magento/docker.pem.pub /etc/ssh/authorized_keys
 ADD ./conf/magento/docker.pem /etc/ssh/docker.pem
-RUN chmod 400 /etc/ssh/authorized_keys
+RUN chmod 400 /etc/ssh/authorized_keys && chown apache.apache /etc/ssh/authorized_keys
 ADD ./conf/daemons/.terminal /home/apache/.terminal
 RUN cp /root/.bashrc /home/apache && ln -s /home/apache/.bashrc /home/apache/.bash_profile
 RUN echo -e "\nsource ~/.terminal\n" >> /home/apache/.bashrc
