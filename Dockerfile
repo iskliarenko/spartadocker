@@ -45,23 +45,22 @@ COPY ./conf/daemons/mysql-sparta.cnf /etc/my.cnf.d/mysql-sparta.cnf
 
 # SSH
 RUN echo 'root:root' | chpasswd && /usr/bin/ssh-keygen -A 
-RUN echo 'apache:apache' | chpasswd && chsh apache -s /bin/bash && usermod -d /var/www apache 
-RUN chown apache.apache /var/www && mkdir -p /var/www/.ssh
-RUN sed -i -e "s/AuthorizedKeysFile\s*\.ssh\/authorized_keys/AuthorizedKeysFile authorized_keys/g" /etc/ssh/sshd_config
-ADD ./conf/magento/docker.pem.pub /var/www/authorized_keys
-ADD ./conf/magento/docker.pem /var/www/docker.pem
-RUN chmod 400 /var/www/authorized_keys
-ADD ./conf/daemons/.terminal /var/www/.terminal
-RUN cp /root/.bashrc /var/www && ln -s /var/www/.bashrc /var/www/.bash_profile
-RUN echo -e "\nsource ~/.terminal\n" >> /var/www/.bashrc
+RUN echo 'apache:apache' | chpasswd && chsh apache -s /bin/bash && usermod -d /home/apache apache 
+RUN chown -R apache.apache /var/www  
+RUN sed -i -e "s/AuthorizedKeysFile\s*\.ssh\/authorized_keys/AuthorizedKeysFile \/etc\/ssh\/authorized_keys/g" /etc/ssh/sshd_config
+ADD ./conf/magento/docker.pem.pub /etc/ssh/authorized_keys
+ADD ./conf/magento/docker.pem /etc/ssh/docker.pem
+RUN chmod 400 /etc/ssh/authorized_keys
+ADD ./conf/daemons/.terminal /home/apache/.terminal
+RUN cp /root/.bashrc /home/apache && ln -s /home/apache/.bashrc /home/apache/.bash_profile
+RUN echo -e "\nsource ~/.terminal\n" >> /home/apache/.bashrc
 RUN echo 'apache ALL=(ALL:ALL) NOPASSWD:ALL' >> /etc/sudoers
 
 # Magento tools
-RUN mkdir -p /var/www/.config/composer
-RUN touch /var/www/.inputrc /var/www/.vimrc /var/www/.gitconfig
-COPY ./conf/magento/auth.json /var/www/.composer/auth.json
-COPY ./conf/magento/.m2install.conf /var/www/.m2install.conf
-RUN find /var/www/ -exec chown apache.apache {} \;
+RUN mkdir /home/apache/.composer
+COPY ./conf/magento/auth.json /home/apache/.composer/auth.json
+COPY ./conf/magento/.m2install.conf /home/apache/.m2install.conf
+RUN find /home/apache/ -exec chown apache.apache {} \;
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer && chmod +x /usr/bin/composer \
     && curl -o /usr/bin/m2install.sh https://raw.githubusercontent.com/yvoronoy/m2install/master/m2install.sh && chmod +x /usr/bin/m2install.sh \
     && curl -o /usr/bin/convert-for-composer.php https://raw.githubusercontent.com/isitnikov/m2-convert-patch-for-composer-install/master/convert-for-composer.php \
