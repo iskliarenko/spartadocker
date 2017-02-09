@@ -47,9 +47,10 @@ COPY ./conf/daemons/mysql-sparta.cnf /etc/my.cnf.d/mysql-sparta.cnf
 RUN echo 'root:root' | chpasswd && /usr/bin/ssh-keygen -A 
 RUN echo 'apache:apache' | chpasswd && chsh apache -s /bin/bash && usermod -d /var/www apache 
 RUN chown apache.apache /var/www && mkdir -p /var/www/.ssh
-ADD ./conf/magento/docker.pem.pub /var/www/.ssh/authorized_keys
-ADD ./conf/magento/docker.pem /var/www/.ssh/docker.pem
-RUN chmod 400 /var/www/.ssh/*
+RUN sed -i -e "s/AuthorizedKeysFile\s*\.ssh\/authorized_keys/AuthorizedKeysFile authorized_keys/g" /etc/ssh/sshd_config
+ADD ./conf/magento/docker.pem.pub /var/www/authorized_keys
+ADD ./conf/magento/docker.pem /var/www/docker.pem
+RUN chmod 400 /var/www/authorized_keys
 ADD ./conf/daemons/.terminal /var/www/.terminal
 RUN cp /root/.bashrc /var/www && ln -s /var/www/.bashrc /var/www/.bash_profile
 RUN echo -e "\nsource ~/.terminal\n" >> /var/www/.bashrc
@@ -57,6 +58,7 @@ RUN echo 'apache ALL=(ALL:ALL) NOPASSWD:ALL' >> /etc/sudoers
 
 # Magento tools
 RUN mkdir -p /var/www/.config/composer
+RUN touch /var/www/.inputrc /var/www/.vimrc /var/www/.gitconfig
 COPY ./conf/magento/auth.json /var/www/.composer/auth.json
 COPY ./conf/magento/.m2install.conf /var/www/.m2install.conf
 RUN find /var/www/ -exec chown apache.apache {} \;
