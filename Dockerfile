@@ -60,8 +60,11 @@ RUN echo 'apache ALL=(ALL:ALL) NOPASSWD:ALL' >> /etc/sudoers
 RUN mkdir /home/apache/.composer
 COPY ./conf/magento/auth.json /home/apache/.composer/auth.json
 COPY ./conf/magento/.m2install.conf /home/apache/.m2install.conf
+ADD ./scripts/m2modtgl.sh /usr/local/bin/m2modtgl.sh
 RUN find /home/apache/ -exec chown apache.apache {} \;
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer && chmod +x /usr/bin/composer \
+RUN ln -s /usr/local/bin/m2modtgl.sh /usr/local/bin/m2modon \
+    && ln -s /usr/local/bin/m2modtgl.sh /usr/local/bin/m2modoff \
+    && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer && chmod +x /usr/bin/composer \
     && curl -o /usr/bin/m2install.sh https://raw.githubusercontent.com/yvoronoy/m2install/master/m2install.sh && chmod +x /usr/bin/m2install.sh \
     && curl -o /usr/bin/convert-for-composer.php https://raw.githubusercontent.com/isitnikov/m2-convert-patch-for-composer-install/master/convert-for-composer.php \
     && chmod +x /usr/bin/convert-for-composer.php \
