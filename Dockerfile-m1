@@ -60,7 +60,7 @@ RUN echo 'apache ALL=(ALL:ALL) NOPASSWD:ALL' >> /etc/sudoers
 RUN mkdir /home/apache/.composer
 COPY ./conf/magento/auth.json /home/apache/.composer/auth.json
 COPY ./conf/magento/.m2install.conf /home/apache/.m2install.conf
-ADD ./conf/magento/.m1inatall.conf /home/apache/.m1install.conf
+ADD ./conf/magento/.m1install.conf /home/apache/.m1install.conf
 ADD ./scripts/m1install.sh /usr/local/bin/m1install.sh
 RUN find /home/apache/ -exec chown apache.apache {} \;
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer && chmod +x /usr/bin/composer \
