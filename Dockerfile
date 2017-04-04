@@ -11,6 +11,7 @@ RUN yum install -y --nogpgcheck http://www.percona.com/downloads/percona-release
             php php-cli php-mcrypt php-mbstring php-soap php-pecl-xdebug php-xml php-bcmath \
             php-pecl-memcached php-pecl-redis php-pdo php-gd php-mysqlnd php-intl php-pecl-zip \
             ruby ruby-devel sqlite-devel make gcc gcc-c++ \
+            php-mongodb mongodb mongodb-server \
             Percona-Server-server-56 Percona-Server-client-56 \
 
 # Install tidyways
@@ -42,6 +43,9 @@ RUN ln -s /usr/local/bin/php-ext-switch.sh /usr/local/bin/xdebug-sw.sh && /usr/l
         && sed -i -e "s/#ServerName\s*www.example.com:80/ServerName local.dev/g" /etc/httpd/conf/httpd.conf \
         && echo "Header always set Strict-Transport-Security 'max-age=0'" >> /etc/httpd/conf/httpd.conf \
         && echo "umask 002" >> /etc/profile \
+# MongoDB
+        && sed -i -e "s/fork\s*=\s*true/fork = false/g" /etc/mongod.conf \ 
+        && sed -i -e "s/bind_ip\s*=\s*127.0.0.1/#bind_ip = 127.0.0.1/g" /etc/mongod.conf  
 
 # MySQL
 ADD ./conf/daemons/mysql-sparta.cnf /etc/my.cnf.d/mysql-sparta.cnf 
@@ -80,6 +84,6 @@ ADD ./conf/daemons/supervisord.conf /etc/supervisord.conf
 ADD ./scripts/start.sh /start.sh
 RUN chmod 755 /start.sh && /bin/bash /start.sh
 
-EXPOSE 22 80 81 443 3306
+EXPOSE 22 80 81 443 3306 27017
 
 ENTRYPOINT [ "/start.sh" ]
