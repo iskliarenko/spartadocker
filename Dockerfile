@@ -78,12 +78,8 @@ ADD ./conf/daemons/supervisord.conf /etc/supervisord.conf
 
 # Initialization startup script
 ADD ./scripts/start.sh /start.sh
-ADD chmod 755 /start.sh && /bin/bash start.sh
+RUN chmod 755 /start.sh && /bin/bash /start.sh
 
-EXPOSE 3306
-EXPOSE 80
-EXPOSE 443
-EXPOSE 81
-EXPOSE 22
+EXPOSE 22 80 81 443 3306
 
 ENTRYPOINT [ "/start.sh" ]
