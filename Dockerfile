@@ -75,6 +75,11 @@ RUN find /home/apache/ -exec chown apache.apache {} \; \
         && curl -o /usr/bin/convert-for-composer.php https://raw.githubusercontent.com/isitnikov/m2-convert-patch-for-composer-install/master/convert-for-composer.php \
         && chmod +x /usr/bin/convert-for-composer.php \
         && curl -o /usr/bin/n98-magerun2 https://files.magerun.net/n98-magerun2.phar && chmod +x /usr/bin/n98-magerun2 \
+# Tools from Performance team https://gist.github.com/kandy
+        && mkdir -p /usr/share/magetools/sql \
+        && curl -o /usr/share/magetools/inline_profiler_autoprepend.php https://gist.githubusercontent.com/kandy/7ae16d74e2bdc35ffd7b524f089259c2/raw/1f7392faade651a1e4b28f317f6b3706a61622ea/autoprepend.php \
+        && curl -o /usr/share/magetools/sql/bootstrap.php https://gist.githubusercontent.com/kandy/4e07735185dfdfe30cb58eba5cc87ece/raw/68f052c5b1093bf3e59f02df9235b5c59d828267/bootstrap.php \
+        && curl -o /usr/share/magetools/sql/env.php https://gist.githubusercontent.com/kandy/4e07735185dfdfe30cb58eba5cc87ece/raw/68f052c5b1093bf3e59f02df9235b5c59d828267/env.php \
 
 # Supervisor config
         && mkdir /var/log/supervisor/ && /usr/bin/easy_install supervisor && /usr/bin/easy_install supervisor-stdout && rm /tmp/* -rf
