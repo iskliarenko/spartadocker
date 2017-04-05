@@ -8,7 +8,7 @@ RUN yum install -y --nogpgcheck http://www.percona.com/downloads/percona-release
         && yum update --enablerepo=remi-php70 -y --nogpgcheck && yum install -d 0 --nogpgcheck --enablerepo=remi-php70 -y vim rsync less which openssh-server cronie sudo \
             bash-completion bash-completion-extras mod_ssl mc nano dos2unix unzip lsof pv telnet zsh patch python2-pip net-tools git tmux htop \
             httpd httpd-tools \
-            php php-cli php-mcrypt php-mbstring php-soap php-pecl-xdebug php-xml php-bcmath \
+            php php-cli php-mcrypt php-mbstring php-soap php-pecl-xdebug php-xml php-bcmath phpmyadmin \
             php-pecl-memcached php-pecl-redis php-pdo php-gd php-mysqlnd php-intl php-pecl-zip \
             ruby ruby-devel sqlite-devel make gcc gcc-c++ \
             php-mongodb mongodb mongodb-server \
@@ -41,6 +41,7 @@ RUN ln -s /usr/local/bin/php-ext-switch.sh /usr/local/bin/xdebug-sw.sh && /usr/l
         && sed -i -e "s/AllowOverride\s*None/AllowOverride All/g" /etc/httpd/conf/httpd.conf \
         && sed -i -e "s/#OPTIONS=/OPTIONS=-DFOREGROUND/g" /etc/sysconfig/httpd \
         && sed -i -e "s/#ServerName\s*www.example.com:80/ServerName local.dev/g" /etc/httpd/conf/httpd.conf \
+        && sed -i -e "s/FALSE/TRUE/g" /etc/phpMyAdmin/config.inc.php \
         && echo "Header always set Strict-Transport-Security 'max-age=0'" >> /etc/httpd/conf/httpd.conf \
         && echo "umask 002" >> /etc/profile \
 # MongoDB
@@ -84,6 +85,13 @@ RUN find /home/apache/ -exec chown apache.apache {} \; \
 # Supervisor config
         && mkdir /var/log/supervisor/ && /usr/bin/easy_install supervisor && /usr/bin/easy_install supervisor-stdout && rm /tmp/* -rf
 ADD ./conf/daemons/supervisord.conf /etc/supervisord.conf
+
+# XHGUI & PhpMyAdmin
+ADD ./conf/daemons/aliases.conf /etc/httpd/conf.d/aliases.conf
+RUN rm /etc/httpd/conf.d/phpMyAdmin.conf  && mkdir /usr/share/xhgui \
+        && git clone https://github.com/kandy/xhgui.git /usr/share/xhgui \
+        && /usr/bin/composer install -d /usr/share/xhgui \
+        && find /usr/share/xhgui /var/log/httpd /root/.composer -exec chown apache.apache {} \; 
 
 # Initialization startup script
 ADD ./scripts/start.sh /start.sh
