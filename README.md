@@ -15,9 +15,11 @@ https://github.com/iskliarenko/spartadocker/archive/master.zip
 ```
 
 ### Build and run
-Commands should be executed from the project directory.
+ - Generate your [Magento Access Keys](http://devdocs.magento.com/guides/v2.0/install-gde/prereq/dev_install.html)
+ - Copy auth.json `cp conf/magento/auth.json.example conf/magento/auth.json`
 
-Build and run docker container for Magento2 by using next command:
+ - Update auth.json by your credentials
+ - Build and run docker container for Magento2 by using next command:
 ```
 docker-compose up
 ```
