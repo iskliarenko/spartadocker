@@ -28,14 +28,16 @@ docker-compose -f docker-compose-m1.yml up
 
 After build (5-15 minutes at first time) your environment will be ready and available here: 
  - Web - http://127.0.0.1:8000/
- - SSH - ssh root@localhost -p2222
+ - SSH - ssh apache@localhost -p2222 -i conf/magento/docker.pem
  - MySQL - localhost:33060
  - MailCatcher - http://localhost:8001/
 
 The next step you can sign into container and install Magento or deploy the existing dumps.
 
 ### Access credentials
-SSH: user `root` with password `root`
+SSH: users
+ - `root` with password `root`
+ - `apache` with password `apache`
 or
 using imported key: conf/magento/docker.pem 
 
