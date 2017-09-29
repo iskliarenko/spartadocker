@@ -2,7 +2,7 @@ FROM centos:latest
 MAINTAINER Yuriy Sklyarenko <iskliarenko@magento.com>
 
 # Additional repos
-RUN yum install -y --nogpgcheck http://www.percona.com/downloads/percona-release/redhat/0.1-3/percona-release-0.1-3.noarch.rpm \
+RUN yum install -y --nogpgcheck http://www.percona.com/downloads/percona-release/redhat/0.1-4/percona-release-0.1-4.noarch.rpm \
 		   http://rpms.remirepo.net/enterprise/remi-release-7.rpm
 RUN echo -e "\nip_resolve=4\nerrorlevel=0\nrpmverbosity=critical" >> /etc/yum.conf
 RUN yum update --enablerepo=remi-php55 -y --nogpgcheck && yum install -d 0 --nogpgcheck --enablerepo=remi-php55 -y vim rsync less which openssh-server cronie sudo \
