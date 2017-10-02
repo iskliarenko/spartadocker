@@ -9,10 +9,10 @@ IP=`ifconfig eth0 |grep netmask |awk {' print $2 '}`
 
 if [ ! -d "/var/lib/mysql/magento/" ]; then
 	echo -e "\n ---------------------- installing default MySQL databases ------------------------ \n"
-	/bin/mysql_install_db --user mysql >/dev/null 2>&1 
+	#/bin/mysql_install_db --user mysql >/dev/null 2>&1 
 	#/bin/mysql_install_db --explicit_defaults_for_timestamp --user mysql >/dev/null 2>&1 
 	chown -R mysql.mysql /var/lib/mysql 
-	
+
 	# start mysqld
 	/bin/mysqld_safe &
 	sleep 5
