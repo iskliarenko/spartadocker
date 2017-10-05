@@ -49,7 +49,7 @@ RUN ln -s /usr/local/bin/php-ext-switch.sh /usr/local/bin/xdebug-sw.sh && /usr/l
         && sed -i -e "s/bind_ip\s*=\s*127.0.0.1/#bind_ip = 127.0.0.1/g" /etc/mongod.conf  
 
 # MySQL
-ADD ./conf/daemons/mysql-sparta.cnf /etc/my.cnf.d/mysql-sparta.cnf 
+ADD ./conf/daemons/mysql-sparta.cnf /etc/mysql/my.cnf
 
 # SSH
 ADD ./conf/daemons/.terminal /home/apache/.terminal
