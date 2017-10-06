@@ -41,7 +41,7 @@ RUN echo "Header always set Strict-Transport-Security 'max-age=0'" >> /etc/httpd
 RUN echo "umask 002" >> /etc/profile
 
 # MySQL
-COPY ./conf/daemons/mysql-sparta.cnf /etc/my.cnf.d/mysql-sparta.cnf 
+ADD ./conf/daemons/mysql-sparta.cnf /etc/mysql/my.cnf
 
 # SSH
 RUN echo 'root:root' | chpasswd && /usr/bin/ssh-keygen -A 
