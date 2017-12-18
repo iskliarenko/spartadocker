@@ -40,7 +40,7 @@ RUN ln -s /usr/local/bin/php-ext-switch.sh /usr/local/bin/xdebug-sw.sh && /usr/l
 # Apache
         && sed -i -e "s/AllowOverride\s*None/AllowOverride All/g" /etc/httpd/conf/httpd.conf \
         && sed -i -e "s/#OPTIONS=/OPTIONS=-DFOREGROUND/g" /etc/sysconfig/httpd \
-        && sed -i -e "s/#ServerName\s*www.example.com:80/ServerName local.dev/g" /etc/httpd/conf/httpd.conf \
+        && sed -i -e "s/#ServerName\s*www.example.com:80/ServerName local.magento/g" /etc/httpd/conf/httpd.conf \
         && sed -i -e "s/FALSE/TRUE/g" /etc/phpMyAdmin/config.inc.php \
         && echo "Header always set Strict-Transport-Security 'max-age=0'" >> /etc/httpd/conf/httpd.conf \
         && echo "umask 002" >> /etc/profile \
