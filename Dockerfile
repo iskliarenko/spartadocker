@@ -9,16 +9,19 @@ RUN yum install -y --nogpgcheck http://www.percona.com/downloads/percona-release
             bash-completion bash-completion-extras mod_ssl mc nano dos2unix unzip lsof pv telnet zsh patch python2-pip net-tools git tmux htop wget \
             httpd httpd-tools \
             php php-cli php-mcrypt php-mbstring php-soap php-pecl-xdebug php-xml php-bcmath phpmyadmin \
-            php-pecl-memcached php-pecl-redis php-pdo php-gd php-mysqlnd php-intl php-pecl-zip \
+            php-pecl-memcached php-pecl-redis php-pdo php-gd php-mysqlnd php-intl php-pecl-zip php-mongodb \
             ruby ruby-devel sqlite-devel make gcc gcc-c++ \
-            php-mongodb mongodb mongodb-server \
             Percona-Server-server-56 Percona-Server-client-56 \
 
 # Install tidyways
         && echo -e "[tideways]\nname = Tideways\nbaseurl = https://s3-eu-west-1.amazonaws.com/qafoo-profiler/rpm" > /etc/yum.repos.d/tideways.repo \
         && rpm --import https://s3-eu-west-1.amazonaws.com/qafoo-profiler/packages/EEB5E8F4.gpg \
         && yum makecache --disablerepo=* --enablerepo=tideways \
-        && yum install -y --nogpgcheck tideways-php tideways-cli && yum clean all \
+        && yum install -y --nogpgcheck tideways-php tideways-cli \
+
+# Install MongoDB 3.4
+        && echo -e "[mongodb34]\nname = MongoDB Repository\nbaseurl = https://repo.mongodb.org/yum/redhat/7/mongodb-org/3.4/x86_64/\ngpgcheck=0\nenabled=1" > /etc/yum.repos.d/mongodb-org.repo \
+        && yum install -y --nogpgcheck mongodb-org && yum clean all \
 
 # Mailcatcher
         && gem install mailcatcher --no-ri --no-rdoc
