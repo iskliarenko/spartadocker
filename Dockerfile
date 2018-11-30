@@ -5,7 +5,7 @@ MAINTAINER Yuriy Sklyarenko <iskliarenko@magento.com>
 RUN yum install -y --nogpgcheck http://www.percona.com/downloads/percona-release/redhat/0.1-4/percona-release-0.1-4.noarch.rpm \
        http://rpms.remirepo.net/enterprise/remi-release-7.rpm \
         && echo -e "\nip_resolve=4\nerrorlevel=0\nrpmverbosity=critical" >> /etc/yum.conf \
-        && yum update --enablerepo=remi-php70 -y --nogpgcheck && yum install -d 0 --nogpgcheck --enablerepo=remi-php70 -y vim rsync less which openssh-server cronie sudo \
+        && yum update --enablerepo=remi-php71 -y --nogpgcheck && yum install -d 0 --nogpgcheck --enablerepo=remi-php71 -y vim rsync less which openssh-server cronie sudo \
             bash-completion bash-completion-extras mod_ssl mc nano dos2unix unzip lsof pv telnet zsh patch python2-pip net-tools git tmux htop wget \
             httpd httpd-tools \
             php php-cli php-mcrypt php-mbstring php-soap php-pecl-xdebug php-xml php-bcmath phpmyadmin \
