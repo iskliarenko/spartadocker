@@ -79,6 +79,8 @@ RUN find /home/apache/ -exec chown apache.apache {} \; \
         && curl -o /usr/bin/convert-for-composer.php https://raw.githubusercontent.com/isitnikov/m2-convert-patch-for-composer-install/master/convert-for-composer.php \
         && chmod +x /usr/bin/convert-for-composer.php \
         && curl -o /usr/bin/n98-magerun2 https://files.magerun.net/n98-magerun2.phar && chmod +x /usr/bin/n98-magerun2 \
+        && git clone git@github.com:magento-sparta/ee-support-tools.git --branch cloud-tools /usr/share/ee-support-tools \
+        && ln -s /usr/share/ee-support-tools/cloud-tools/dump.sh /usr/bin/cloud-dump && ln -s /usr/share/ee-support-tools/cloud-tools/remote-shell.sh /usr/bin/cloud-ssh \
 # Tools from Performance team https://gist.github.com/kandy
         && mkdir -p /usr/share/magetools/sql \
         && curl -o /usr/share/magetools/inline_profiler_autoprepend.php https://gist.githubusercontent.com/kandy/7ae16d74e2bdc35ffd7b524f089259c2/raw/1f7392faade651a1e4b28f317f6b3706a61622ea/autoprepend.php \
