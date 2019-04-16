@@ -1,5 +1,5 @@
 FROM centos:latest
-MAINTAINER Yuriy Sklyarenko <iskliarenko@magento.com>
+MAINTAINER Yuriy Sklyarenko <skliaren@adobe.com>
 
 # Additional repos
 RUN yum install -y --nogpgcheck http://www.percona.com/downloads/percona-release/redhat/0.1-4/percona-release-0.1-4.noarch.rpm \
