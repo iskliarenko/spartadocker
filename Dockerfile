@@ -42,6 +42,7 @@ RUN yum install -y --nogpgcheck http://rpms.remirepo.net/enterprise/remi-release
 
 # Apache configuration
         && sed -i -e "s/AllowOverride\s*None/AllowOverride All/g" /etc/httpd/conf/httpd.conf \
+        && sed -i -e "s/var\/www\/html/var\/www\/html\/pub/g" /etc/httpd/conf/httpd.conf \
         && sed -i -e "s/#OPTIONS=/OPTIONS=-DFOREGROUND/g" /etc/sysconfig/httpd \
         && sed -i -e "s/#ServerName\s*www.example.com:80/ServerName local.magento/g" /etc/httpd/conf/httpd.conf \
         && sed -i -e "s/FALSE/TRUE/g" /etc/phpMyAdmin/config.inc.php \
