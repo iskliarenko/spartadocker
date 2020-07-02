@@ -81,6 +81,7 @@ ADD ./scripts/start.sh /start.sh
 
 RUN echo 'root:root' | chpasswd \
         && /usr/bin/ssh-keygen -A \
+        && mkdir -p /var/www/html/pub \
         && echo 'apache:apache' | chpasswd && chsh apache -s /bin/bash && usermod -d /home/apache apache \
         && chown -R apache.apache /var/www \
         && sed -i -e "s/AuthorizedKeysFile\s*\.ssh\/authorized_keys/AuthorizedKeysFile \/etc\/ssh\/authorized_keys/g" /etc/ssh/sshd_config \
@@ -104,7 +105,7 @@ RUN echo 'root:root' | chpasswd \
         && curl -o /usr/share/magetools/sql/bootstrap.php https://gist.githubusercontent.com/kandy/4e07735185dfdfe30cb58eba5cc87ece/raw/68f052c5b1093bf3e59f02df9235b5c59d828267/bootstrap.php \
         && curl -o /usr/share/magetools/sql/env.php https://gist.githubusercontent.com/kandy/4e07735185dfdfe30cb58eba5cc87ece/raw/68f052c5b1093bf3e59f02df9235b5c59d828267/env.php \
 
-        && chmod 755 /start.sh && /bin/bash /start.sh
+        && chmod 755 /start.sh && /bin/bash /start.sh && rm -r /var/www/html/pub
 
 EXPOSE 22 80 81 443 3306 6379 9200 27017
 
